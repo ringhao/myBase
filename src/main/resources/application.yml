@@ -1,0 +1,49 @@
+server:
+  port: 8082
+
+
+spring:
+  # jpa相关配置 spring.jpa.*
+  jpa:
+    # 控制台显示SQL
+    showSql: true
+    hibernate:
+      # 会根据就映射实体类自动创建或更新数据表
+      ddl-auto: update
+      # 默认创建表类型是MyISAM，是非事务安全的，所以无法实现事物回滚 # 指定如下方言: 创建的表类型是Innodb，才可以进行对事物的回滚。
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  datasource:
+    # 数据源基本配置
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1:3306/usertest?serverTimezone=GMT%2B8
+    # 8.x版本驱动包，要使用以下类作为驱动类
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 指定 Druid 数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 数据源其他配置, DataSourceProperties中没有相关属性,默认无法绑定
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,logback
+    maxPoolPreparedStatementPerConnectionSize: 25
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  messages:
+    basename: i18n.login
+
+mybatis:
+  #核心配置文件路径
+  config-location: classpath:mybatis/mybatis-config.xml
+  #映射配置文件路径
+  mapper-locations: classpath:mybatis/mapper/*.xml
